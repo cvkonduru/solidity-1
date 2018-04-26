@@ -26,6 +26,8 @@ using namespace std;
 using namespace dev;
 using namespace dev::eth;
 
+static_assert(sizeof(size_t) <= 8, "size_t must be at most 64-bits wide");
+
 AssemblyItem AssemblyItem::toSubAssemblyTag(size_t _subId) const
 {
 	assertThrow(data() < (u256(1) << 64), Exception, "Tag already has subassembly set.");
@@ -46,6 +48,7 @@ pair<size_t, size_t> AssemblyItem::splitForeignPushTag() const
 void AssemblyItem::setPushTagSubIdAndTag(size_t _subId, size_t _tag)
 {
 	assertThrow(m_type == PushTag || m_type == Tag, Exception, "");
+	assertThrow(_tag < (u256(1) << 64), Exception, "");
 	setData(_tag + (u256(_subId + 1) << 64));
 }
 
