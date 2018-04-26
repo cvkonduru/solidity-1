@@ -50,7 +50,7 @@ void AssemblyItem::setPushTagSubIdAndTag(size_t _subId, size_t _tag)
 {
 	assertThrow(m_type == PushTag || m_type == Tag, Exception, "");
 	assertThrow(_tag < (u256(1) << 64), Exception, "");
-	setData(_tag + (u256(_subId + 1) << 64));
+	setData(_tag + ((u256(_subId) + 1) << 64));
 }
 
 unsigned AssemblyItem::bytesRequired(unsigned _addressLength) const
