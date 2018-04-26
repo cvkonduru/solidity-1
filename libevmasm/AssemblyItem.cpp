@@ -42,7 +42,8 @@ AssemblyItem AssemblyItem::toSubAssemblyTag(size_t _subId) const
 pair<size_t, size_t> AssemblyItem::splitForeignPushTag() const
 {
 	assertThrow(m_type == PushTag || m_type == Tag, Exception, "");
-	return make_pair(size_t((data()) / (u256(1) << 64)) - 1, size_t(data()));
+	// There may be a bug in boost where typecasting u256 to size_t results in all bits set if the higher bit was set
+	return make_pair(size_t((data() >> 64) - 1), size_t(data() & 0xffffffffffffffff));
 }
 
 void AssemblyItem::setPushTagSubIdAndTag(size_t _subId, size_t _tag)
